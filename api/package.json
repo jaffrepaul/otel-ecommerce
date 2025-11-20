@@ -1,0 +1,57 @@
+{
+  "name": "otel-ecommerce-api",
+  "version": "1.0.0",
+  "description": "OpenTelemetry-instrumented Node.js e-commerce API for Sentry",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node --import ./instrumentation.js src/server.js",
+    "dev": "nodemon --import ./instrumentation.js src/server.js",
+    "test": "node --import ./instrumentation.js src/utils/loadTest.js",
+    "test:api": "curl -s http://localhost:3000/api/products | json_pp || curl http://localhost:3000/api/products",
+    "db:setup": "node src/utils/setupDatabase.js",
+    "mode:direct": "node scripts/set-mode.js direct",
+    "mode:collector": "node scripts/set-mode.js collector",
+    "mode:status": "node scripts/set-mode.js status",
+    "collector:start": "docker-compose up -d otel-collector && echo '✅ Collector started. Run: npm run mode:collector'",
+    "collector:stop": "docker-compose stop otel-collector && echo '✅ Collector stopped'",
+    "collector:logs": "docker logs -f otel-ecommerce-collector",
+    "collector:health": "curl -s http://localhost:13133 && echo ''",
+    "demo:direct": "npm run mode:direct && npm run collector:stop 2>/dev/null || true && npm start",
+    "demo:collector": "npm run mode:collector && npm run collector:start && sleep 2 && npm start"
+  },
+  "keywords": [
+    "opentelemetry",
+    "otel",
+    "sentry",
+    "observability",
+    "tracing"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@opentelemetry/api": "^1.9.0",
+    "@opentelemetry/api-logs": "^0.208.0",
+    "@opentelemetry/auto-instrumentations-node": "^0.50.0",
+    "@opentelemetry/exporter-logs-otlp-http": "^0.54.0",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.54.0",
+    "@opentelemetry/instrumentation": "^0.54.0",
+    "@opentelemetry/resources": "^1.28.0",
+    "@opentelemetry/sdk-logs": "^0.54.0",
+    "@opentelemetry/sdk-metrics": "^1.28.0",
+    "@opentelemetry/sdk-node": "^0.54.0",
+    "@opentelemetry/sdk-trace-node": "^1.28.0",
+    "@opentelemetry/semantic-conventions": "^1.28.0",
+    "axios": "^1.7.7",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "express-validator": "^7.2.0",
+    "pg": "^8.13.1",
+    "pino": "^9.5.0",
+    "pino-http": "^10.3.0",
+    "redis": "^4.7.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
+}
