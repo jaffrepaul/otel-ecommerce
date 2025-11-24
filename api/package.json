@@ -14,8 +14,12 @@
     "mode:direct": "node scripts/set-mode.js direct",
     "mode:collector": "node scripts/set-mode.js collector",
     "mode:status": "node scripts/set-mode.js status",
+    "collector:start": "node scripts/run-collector.js start",
+    "collector:stop": "node scripts/run-collector.js stop",
+    "collector:logs": "tail -f .otel-collector/collector.log",
     "collector:health": "curl -s http://localhost:13133 && echo ''",
-    "demo:direct": "npm run mode:direct && npm start"
+    "demo:direct": "npm run mode:direct && npm start",
+    "demo:collector": "npm run mode:collector && npm run collector:start && sleep 2 && npm start"
   },
   "keywords": [
     "opentelemetry",
@@ -46,7 +50,8 @@
     "express-validator": "^7.2.0",
     "pg": "^8.13.1",
     "pino": "^9.5.0",
-    "pino-http": "^10.3.0"
+    "pino-http": "^10.3.0",
+    "tar": "^7.5.2"
   },
   "devDependencies": {
     "nodemon": "^3.1.7"

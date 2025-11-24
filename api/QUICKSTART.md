@@ -141,21 +141,44 @@ npm run mode:status
 
 ### Switch to Collector Mode
 
-**Prerequisites:** Same as Steps 1-4 above (infrastructure and database must be running). You'll need an OpenTelemetry Collector running separately.
+Send telemetry through an OpenTelemetry Collector instead of directly to Sentry. The collector will be automatically downloaded and run without Docker.
+
+**Prerequisites:** Same as Steps 1-4 above (database must be configured).
 
 ```bash
-# 1. Switch mode
-npm run mode:collector
-
-# 2. Add to .env:
+# 1. Add to .env (if not already present):
 #    OTEL_EXPORTER_OTLP_ENDPOINT=https://YOUR-ORG-ID.ingest.us.sentry.io
 #    SENTRY_AUTH_HEADER=sentry_key=YOUR_PUBLIC_KEY,sentry_version=7
 
-# 3. Start app
+# 2. Switch mode
+npm run mode:collector
+
+# 3. Start collector (downloads binary automatically on first run)
+npm run collector:start
+
+# 4. Start app
 npm start
 ```
 
 Look for: `"📡 Mode: COLLECTOR"`
+
+The first time you run `npm run collector:start`, it will download the OpenTelemetry Collector binary (~100MB). This is a one-time download.
+
+**Collector Management:**
+
+```bash
+# Start collector
+npm run collector:start
+
+# Stop collector
+npm run collector:stop
+
+# Check collector health
+npm run collector:health
+
+# View collector logs
+npm run collector:logs
+```
 
 **Test it:** Use the same commands from Step 6:
 
@@ -164,7 +187,7 @@ npm run test:api
 npm test
 ```
 
-Traces now flow: App → Collector → Sentry (check both!)
+Traces now flow: App → Collector (localhost:4318) → Sentry
 
 ### Switch to Direct Mode
 

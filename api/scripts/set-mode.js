@@ -82,8 +82,11 @@ if (mode === 'direct') {
   
 } else if (mode === 'collector') {
   console.log('Next:');
-  console.log('  1. npm run collector:start');
-  console.log('  2. npm start');
+  console.log('  1. Ensure .env has:');
+  console.log('     OTEL_EXPORTER_OTLP_ENDPOINT=https://YOUR-ORG.ingest.us.sentry.io');
+  console.log('     SENTRY_AUTH_HEADER=sentry_key=YOUR_PUBLIC_KEY,sentry_version=7');
+  console.log('  2. npm run collector:start');
+  console.log('  3. npm start');
   console.log('');
   console.log('Look for: "📡 Mode: COLLECTOR"');
 }
